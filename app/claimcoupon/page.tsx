@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Manrope } from '@next/font/google';
 import Image from 'next/image';
 import Coupon from '@/components/ui/Coupon';
-import { Copy, Download, Fullscreen, Smartphone, Ticket } from 'lucide-react';
+import { Copy, Download, Smartphone } from 'lucide-react';
 
 const manrope = Manrope({
   subsets: ['latin'],
