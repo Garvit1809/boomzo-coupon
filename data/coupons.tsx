@@ -1,3 +1,16 @@
+
+export interface CouponProps {
+    coupon: {
+        couponId: string;
+        brandName: string;
+        bgColor: string;
+        offerText: string;
+        Validity: string;
+        CouponCount: string;
+        ImgUrl: string;
+    };
+}
+
 export const coupons = [ 
     {
         couponId: "1",
@@ -30,15 +43,3 @@ export const coupons = [
 ];
 
 
-
-export interface CouponProps {
-    coupon: {
-        couponId: string;
-        brandName: string;
-        bgColor: string;
-        offerText: string;
-        Validity: string;
-        CouponCount: string;
-        ImgUrl: string;
-    };
-}

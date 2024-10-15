@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import AppBottomBar from "@/components/AppBottomBar";
-import Bannner from "@/components/Bannner";
+import Bannner from "@/components/Banner";
 import { Manrope } from '@next/font/google';
 
 const manrope = Manrope({

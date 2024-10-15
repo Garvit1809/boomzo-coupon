@@ -2,72 +2,15 @@
 import { useState } from "react";
 // import DeatailsForm from "@/components/DeatailsForm";
 import Coupon from "@/components/ui/Coupon";
-import {
-  GalleryHorizontalEnd,
-  HeartPulse,
-  Menu,
-  Shirt,
-  ShoppingCart,
-  TicketsPlane,
-  UtensilsCrossed,
-  WashingMachine,
-} from "lucide-react";
 import { coupons } from "@/data/coupons";
 import Link from "next/link";
+import { filter } from "@/data/filter-data";
+import CouponSkeleton from "@/components/ui/CouponSkeleton";
 
-
-interface FilterItem {
-  name: string;
-  bgColor: string;
-  Icon: JSX.Element;
-}
 
 const Home: React.FC = () => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-
-  const filter: FilterItem[] = [
-    {
-      name: "All",
-      bgColor: "#a2225a",
-      Icon: <GalleryHorizontalEnd size={24} />,
-    },
-    {
-      name: "Fashion",
-      bgColor: "#a2225a",
-      Icon: <Shirt size={24} />,
-    },
-    {
-      name: "Electronics",
-      bgColor: "#a2225a",
-      Icon: <WashingMachine size={24} />,
-    },
-    {
-      name: "Grocery",
-      bgColor: "#a2225a",
-      Icon: <ShoppingCart size={24} />,
-    },
-    {
-      name: "Health",
-      bgColor: "#a2225a",
-      Icon: <HeartPulse size={24} />,
-    },
-    {
-      name: "Travel",
-      bgColor: "#a2225a",
-      Icon: <TicketsPlane size={24} />,
-    },
-    {
-      name: "Food",
-      bgColor: "#a2225a",
-      Icon: <UtensilsCrossed size={24} />,
-    },
-    {
-      name: "Others",
-      bgColor: "#a2225a",
-      Icon: <Menu size={24} />,
-    },
-  ];
-
+  const [loding, setLoding] = useState<boolean>(true);
   const handleTagClick = (tagName: string) => {
     setSelectedTags((prev) =>
       prev.includes(tagName) ? prev.filter((tag) => tag !== tagName) : [...prev, tagName]
@@ -85,22 +28,19 @@ const Home: React.FC = () => {
               return (
                 <div
                   key={index}
-                  className={`filter-tag p-2 px-4 flex gap-x-1 font-bold text-[#ffdf29] border-2 border-[#932c2b] rounded-3xl cursor-pointer `}
-                  style={{
-                    backgroundColor: isSelected ? "#932c2b" : "#a2225a",
-                  }}
+                  className={`filter-tag p-2 px-4 flex gap-x-1 font-semibold text-pink-600 border-2 border-pink-600 pb-2 rounded-3xl cursor-pointer ${isSelected? "bg-pink-600/10": "bg-pink-600/20" } hover:scale-95  `}
                   onClick={() => handleTagClick(item.name)}
                 >
-                  <span className="text-[#ffdf29]">{item.Icon}</span>
+                  <span className="text-pink-600">{item.Icon}</span>
                   {item.name}
                 </div>
               );
             })}
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-2 justify-center items-center w-[95vw] pt-6 mx-auto pb-40">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 justify-center items-center w-[95vw] pt-6 mx-auto pb-40">
           {coupons.map((coupon) => (
-            <Link href={`/couponview/${coupon.couponId}`} className="flex justify-center" key={coupon.couponId}>
+            <Link href={`/couponview/${coupon.couponId}`} className="flex justify-center " key={coupon.couponId}>
               <Coupon
                 brandName={coupon.brandName}
                 ImgUrl={coupon.ImgUrl}
@@ -108,12 +48,26 @@ const Home: React.FC = () => {
                 offerText={coupon.offerText}
                 Validity={coupon.Validity}
                 bgColor={coupon.bgColor}
+                className="hover:filter hover:brightness-110 hover:transition hover:scale-95"
 
               />
             </Link>
           ))}
+          {loding &&
+            <>
+            <div onClick={()=> setLoding(false)} className="flex justify-center items-center px-5 ">
+              <CouponSkeleton />
+            </div>
+             <div className="flex justify-center items-center px-5 ">
+             <CouponSkeleton />
+           </div>
+            <div className="flex justify-center items-center px-5 ">
+            <CouponSkeleton />
+          </div>
+            </>
+          }
         </div>
-        {/* <DeatailsForm /> */}
+          
       </main>
     </div>
   );

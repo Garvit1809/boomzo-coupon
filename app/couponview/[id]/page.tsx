@@ -22,7 +22,7 @@ export default function Page() {
         return <h1 className="text-center">Coupon not found</h1>;
     }
     return (
-        <div className={` ${manrope.className} flex items-center flex-col`}>
+        <div className={` ${manrope.className} flex items-center flex-col pb-40`}>
             <h1 className='text-center font-bold texl-lg'>Coupon View {id}</h1>
             <div className='p-2'>
                 {/* <Coupon /> */}
@@ -65,7 +65,7 @@ export default function Page() {
                         </div>
                     </div>
                     <div className='flex items-center justify-center mb-4 gap-x-2 px-2'>
-                        <Button size={'lg'} onClick={() => router.push(`/claimcoupon`)} className={`my-2 bg-[#a2225a] p-4 flex gap-x-2 ${manrope.className} rounded-2xl text-lg  font-bold`}> Avail Offer <span className='bg-white rounded-full'> <ChevronRight color='#a2225a' /></span></Button>
+                        <Button size={'lg'} onClick={() => router.push(`/claimcoupon`)} className={`my-2 bg-[#a2225a] hover:bg-pink-600 hover:scale-95 hover:transition p-4 flex gap-x-2 ${manrope.className} rounded-2xl text-lg  font-bold`}> Avail Offer <span className='bg-white rounded-full'> <ChevronRight color='#a2225a' /></span></Button>
                     </div>
                 </div>
             </div>
