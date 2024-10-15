@@ -5,9 +5,9 @@ import { Copy, Smartphone } from 'lucide-react';
 
 export default function Page() {
   return (
-    <div className="p-2 flex justify-center pb-40">
+    <div className="p-2 flex justify-center pb-40 mx-auto w-[95vw]">
       <div  className="w-full border-2 px-2 bg-white border-black max-w-md rounded-xl">
-        <div className="flex justify-center my-4 flex-col items-center">
+        <div className="flex justify-center my-4 flex-col items-center mx-4">
           <Coupon
             brandName="The Raymond shop"
             bgColor="#f99fb4"

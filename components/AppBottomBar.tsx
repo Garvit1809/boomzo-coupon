@@ -6,6 +6,9 @@ import { useRouter, usePathname } from 'next/navigation';
 export default function AppBottomBar() {
   const router = useRouter();
   const currentPath = usePathname(); 
+  if (currentPath === "/login") {
+    return null;
+  }
 
   return (
     <div className="fixed bottom-0 left-0 w-full border-t-2 drop-shadow-xl bg-pink-400/25 bg-white shadow-pink-500 border-pink-600 rounded-t-2xl">

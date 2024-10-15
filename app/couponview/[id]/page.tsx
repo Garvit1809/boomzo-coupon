@@ -22,9 +22,9 @@ export default function Page() {
         return <h1 className="text-center">Coupon not found</h1>;
     }
     return (
-        <div className={` ${manrope.className} flex items-center flex-col pb-40`}>
+        <div className={` ${manrope.className} flex items-center flex-col pb-40 `}>
             <h1 className='text-center font-bold texl-lg'>Coupon View {id}</h1>
-            <div className='p-2'>
+            <div className='p-2 w-[95vw]'>
                 {/* <Coupon /> */}
                 <div className="flex justify-center mb-3" key={coupon.couponId}>
                     <Coupon
