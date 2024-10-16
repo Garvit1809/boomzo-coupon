@@ -5,12 +5,12 @@ import Coupon from "@/components/ui/Coupon";
 import { coupons } from "@/data/coupons";
 import Link from "next/link";
 import { filter } from "@/data/filter-data";
-import CouponSkeleton from "@/components/ui/CouponSkeleton";
+// import CouponSkeleton from "@/components/ui/CouponSkeleton";
 
 
 const Home: React.FC = () => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [loding, setLoding] = useState<boolean>(true);
+  // const [loding, setLoding] = useState<boolean>(true);
   const handleTagClick = (tagName: string) => {
     setSelectedTags((prev) =>
       prev.includes(tagName) ? prev.filter((tag) => tag !== tagName) : [...prev, tagName]
@@ -53,7 +53,7 @@ const Home: React.FC = () => {
               />
             </Link>
           ))}
-          {loding &&
+          {/* {loding &&
             <>
             <div onClick={()=> setLoding(false)} className="flex justify-center items-center px-5 ">
               <CouponSkeleton />
@@ -65,7 +65,7 @@ const Home: React.FC = () => {
             <CouponSkeleton />
           </div>
             </>
-          }
+          } */}
         </div>
           
       </main>
