@@ -2,7 +2,7 @@
 import { BadgeCheckIcon, ChevronRight, Info, MapPin } from 'lucide-react'
 import Image from 'next/image'
 import React from 'react'
-import { Manrope } from '@next/font/google';
+import { Manrope } from 'next/font/google';
 import { Button } from '@/components/ui/button';
 import { useParams } from 'next/navigation';
 import Coupon from '@/components/ui/Coupon';

@@ -1,49 +1,42 @@
-import { Document } from 'mongoose';
-
-export interface CustomerDoc extends Document {
-  name: string;
-  phone: string;
-  couponsRedeemed: [RedemptionRequestDoc["_id"]];
-  couponsAvailable: [IssuanceRequestDoc["_id"]];
-}
-
-export interface CouponDoc extends Document {
-  floaterID: VendorDoc["_id"];
+export interface Coupon {
+  floaterID: string; // Vendor ID
+  category: VendorCategory;
   offerTitle: string;
   validityCriteria: string;
-  issuedTo: [IssuanceRequestDoc["_id"]];
-  redeemedBy: [RedemptionRequestDoc["_id"]];
+  issuedTo: string[]; // Array of IssuanceRequest IDs
   isCouponActive: boolean;
-  category: VendorCategory;
+  impressions: number;
+  clicks: number;
 }
 
-export interface IssuanceRequestDoc extends Document {
-  couponID: CouponDoc["_id"]; // Reference to Coupon
-  customerID: CustomerDoc["_id"]; // Reference to Customer
-  issuerID: VendorDoc["_id"]; // Reference to Issuer Vendor
-  floaterID: VendorDoc["_id"]; // Reference to Floater Vendor
+export interface Customer {
+  name: string;
+  phone: string;
+  coupons: string[]; // Array of IssuanceRequest IDs
+}
+
+export interface IssuanceRequest {
+  couponID: string; // Reference to Coupon ID
+  customerID: string; // Reference to Customer ID
+  issuerID: string; // Reference to Issuer Vendor ID
+  floaterID: string; // Reference to Floater Vendor ID
   isAccepted: boolean;
   issuedOn: Date;
-}
-
-export interface RedemptionRequestDoc extends Document {
-  couponID: CouponDoc["_id"]; // Reference to Coupon
-  customerID: CustomerDoc["_id"]; // Reference to Customer
-  issuerID: VendorDoc["_id"]; // Reference to Issuer Vendor
-  floaterID: VendorDoc["_id"]; // Reference to Floater Vendor
-  isAccepted: boolean;
+  isRedeemed: boolean;
   redeemedOn: Date;
 }
 
-export interface VendorDoc extends Document {
+export interface Vendor {
   name: string;
   img: string;
   phone: string;
   address: string;
   category: VendorCategory;
-  coupons: [CouponDoc];
+  coupons: Coupon[]; // Array of Coupon objects
   isDistributingCoupon: boolean;
   issuanceLimit: number;
+  password: string; // For internal use only
+  salt: string; // For internal use only
 }
 
 export enum VendorCategory {

@@ -1,6 +1,6 @@
 import React from 'react'
 import CouponRequest from '@/components/CouponRequest';
-import { Manrope } from '@next/font/google';
+import { Manrope } from 'next/font/google';
 // import Coupon from '@/components/ui/Coupon'
 // import CouponNotFound from '@/components/CouponNotFound';
 // import CouponVerify from '@/components/CouponVerify';
