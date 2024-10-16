@@ -53,7 +53,7 @@ export const coupons = [
         brandName: "Kunji Lal Sweets",
         bgColor: "#f9c3c4",
         offerText: "Kaju Katli Free",
-        Validity: "Valid on every purchase",
+        Validity: "Valid  on every purchase",
         CouponCount: "005",
         ImgUrl: "/kunj.png",
     },
