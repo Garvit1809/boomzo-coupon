@@ -14,9 +14,16 @@ interface Props {
 
 const Coupon: React.FC<Props> = ({ className, brandName, bgColor, offerText, Validity, CouponCount, ImgUrl }) => {
 
-    const truncateText = (text: string, maxLength: number) => {
-        return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
-    };
+    // const truncateText = (text: string, maxLength: number) => {
+    //     return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
+    // };
+    function getFontSize(textLength: number) {
+        if (textLength > 20) return 'text-xs'; 
+        if (textLength > 15) return 'text-sm'; 
+        if (textLength > 10) return 'text-base'; 
+    }
+    const fontSizeClass = getFontSize(offerText.length);
+    const fontSizeBrand = getFontSize(brandName.length);
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -263,18 +270,18 @@ const Coupon: React.FC<Props> = ({ className, brandName, bgColor, offerText, Val
             />
             <foreignObject x={0} y={18} height={100} width={300} xmlns="http://www.w3.org/1999/xhtml">
                 <div className="relative w-full">
-                    <div className="pl-20 w-48">
-                        <h1 className={`font-bold  text-[#320e03]   leading-none`}>{truncateText(brandName, 20)}</h1>
+                    <div className="ml-20  h-16 flex flex-col justify-between  w-24">
+                        <h1 className={`font-bold  text-[#320e03]  ${fontSizeBrand}   leading-none`}>{brandName}</h1>
                         <div className="btn mt-2 bg-white rounded-2xl w-fit p-1 flex gap-x-2 justify-center items-center px-2"><p className={`text-[7px] font-bold  `}>Avail Offers</p> <span className="bg-black rounded-full"><ChevronRight color="white" size={14} /></span> </div> <div className="absolute top-11 right-[7.1rem] bg-black  rounded-full  text-white text-[8px] p-[0.30rem] leading-none ">{CouponCount}</div>
                     </div>
-                    <div className="absolute top-0 right-8 rounded-full  border-black border-[1px] ">
+                    <div className="absolute  top-0 right-8 rounded-full  border-black border-[1px] ">
                         <Image src={ImgUrl ?? '/default-image.jpg'} alt="coupon" width={75} height={75} className="bg-contain rounded-full " />
                     </div>
-                    <div className="absolute left-[5.0rem] top-[4.7rem] ">
+                    <div className="absolute  left-[5.0rem] top-[4.7rem] ">
                         <h1 className="text-[8px] font-bold text-center text-[#320e03] ">{Validity}</h1>
                     </div>
                 </div>
-                <div className="sideText relative  -top-14 -left-8 -rotate-90  w-32 h-16  flex justify-center"><div className="my-2 flex  items-center justify-center"><h1 className={` font-bold text-[#320e03] text-base w-20 text-pretty   text-center leading-none`}>{offerText} </h1></div></div>
+                <div className="sideText relative   -top-14 -left-8 -rotate-90  w-32 h-16  flex justify-center"><div className="my-2 flex  items-center justify-center"><h1 className={` font-bold text-[#320e03] ${fontSizeClass} w-20 text-pretty   text-center leading-none`}>{offerText}</h1></div></div>
             </foreignObject>
         </svg>
     );

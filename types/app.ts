@@ -1,13 +1,27 @@
-export interface Coupon {
-  floaterID: string; // Vendor ID
-  category: VendorCategory;
+export interface Floater {
+  _id: string;
+  name: string;
+  img: string;
+  phone: string;
+  address: string;
+}
+
+export interface Coupontype {
+  _id: string;
+  floaterID: Floater;
+  category: string;
   offerTitle: string;
   validityCriteria: string;
-  issuedTo: string[]; // Array of IssuanceRequest IDs
+  issuedTo: string[];
   isCouponActive: boolean;
   impressions: number;
   clicks: number;
+  createdAt: string;
+  updatedAt: string;
 }
+
+
+
 
 export interface Customer {
   name: string;

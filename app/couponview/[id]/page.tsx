@@ -4,71 +4,94 @@ import Image from 'next/image'
 import React from 'react'
 import { Manrope } from 'next/font/google';
 import { Button } from '@/components/ui/button';
-import { useParams } from 'next/navigation';
 import Coupon from '@/components/ui/Coupon';
-import { coupons } from '@/data/coupons';
-import { useRouter } from 'next/navigation'
+import { useRouter, useParams, useSearchParams } from 'next/navigation';
+import { useQuery } from 'react-query';
+import { getCouponDetails } from '@/lib/api';
+import CouponSkeleton from '@/components/ui/CouponSkeleton';
+import CouponNotFound from '@/components/CouponNotFound';
 
 const manrope = Manrope({
     subsets: ['latin'],
     weight: ['200', '400', '600', '800'], // Specify the weights you want to include
 });
 export default function Page() {
-    const router = useRouter()
+    const router = useRouter();
     const { id } = useParams();
-    const coupon = coupons.find(c => c.couponId === id);
+    const searchParams = useSearchParams();
+    const vendor = searchParams.get('vendor') || 'defaultVendor';
+    console.log(vendor, id);
+    const dataFetch = async () => {
+        try {
+            const response = await getCouponDetails(vendor, id as string);
+            return response.data;
+        } catch (error) {
+            throw new Error(`Error in fetching data: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        }
+    }
+    const { isLoading,error,  data } = useQuery({
+        queryKey: ["GetDetails"],
+        queryFn: dataFetch,
+    });
+    console.log(data, isLoading)
+    const coupon = data?.coupon || {};
 
-    if (!coupon) {
-        return <h1 className="text-center">Coupon not found</h1>;
+    if (error) {
+        return (
+            <div className='flex items-center justify-center flex-col pb-40 '>
+                <CouponNotFound />
+            </div>
+        )
     }
     return (
-        <div className={` ${manrope.className} flex items-center flex-col pb-40 `}>
-            <h1 className='text-center font-bold texl-lg'>Coupon View {id}</h1>
-            <div className='p-2 w-[95vw]'>
-                {/* <Coupon /> */}
-                <div className="flex justify-center mb-3" key={coupon.couponId}>
-                    <Coupon
-                        brandName={coupon.brandName}
-                        ImgUrl={coupon.ImgUrl}
-                        CouponCount={coupon.CouponCount}
-                        offerText={coupon.offerText}
-                        Validity={coupon.Validity}
-                        bgColor={coupon.bgColor}
-
-                    />
-                </div>
-                <div className='w-full border-2  px-2 border-black max-w-md  rounded-xl '>
-                    <div className='flex items-center gap-x-2 px-2'>
-                        <Info size={34} />
-                        <div className='flex  my-4 flex-col '>
-                            <h1 className={`font-bold  `}>Serving Good Food  & Good Mood </h1>
-                            <p className='text-gray-700' >(Brewbakes Cafe - Restaurant/Cafe)</p>
-                        </div>
+            <div className={` ${manrope.className} flex items-center justify-center flex-col pb-40 `}>
+                <h1 className='text-center font-bold texl-lg'>Coupon View </h1>
+                <div className='p-2 w-[95vw] flex items-center flex-col'>
+                    <div className="flex justify-center mb-3" >
+                      {
+                        isLoading ? <CouponSkeleton /> :   <Coupon
+                        brandName={coupon.floaterID.name}
+                        ImgUrl={coupon.floaterID.img}
+                        CouponCount={"1"}
+                        offerText={coupon.offerTitle}
+                        Validity={coupon.validityCriteria}
+                        bgColor={"#f99fb4"}
+   
+                       />
+                      }
                     </div>
-                    <div className='flex items-center gap-x-2 px-2'>
-                        <MapPin size={34} />
-                        <div className='flex  my-4 flex-col w-72 '>
-                            <p className='text-gray-700  underline' >Ghandhi Eye Hospital, V Mart In front, NKRV complex, Ramghat Rd, Aligarh</p>
+                    <div className='w-full border-2  px-2 border-black max-w-md  rounded-xl '>
+                        <div className='flex items-center gap-x-2 px-2'>
+                            <Info size={34} />
+                            <div className='flex  my-4 flex-col '>
+                                <h1 className={`font-bold  `}>Serving Good Food  & Good Mood </h1>
+                                <p className='text-gray-700' >(Brewbakes Cafe - Restaurant/Cafe)</p>
+                            </div>
                         </div>
-                    </div>
-                    <div className='flex items-center gap-x-2 px-1'>
-                        <Image src={'/special.png'} alt='speac' width={50} height={50} />
-                        <div className='flex  my-4 flex-col w-80 '>
-                            <h1 className={`font-bold  `}>{coupon.offerText}</h1>
-                            <p className='text-gray-700 text-sm text-nowrap' >(Valid on bill above ₹5000 at BrewBakes Cafe)</p>
+                        <div className='flex items-center gap-x-2 px-2'>
+                            <MapPin size={34} />
+                            <div className='flex  my-4 flex-col w-72 '>
+                                <p className='text-gray-700  underline' >{coupon?.floaterID?.address}</p>
+                            </div>
                         </div>
-                    </div>
-                    <div className='flex items-center gap-x-2 px-2'>
-                        <BadgeCheckIcon color='green' size={34} />
-                        <div className='flex  my-4 flex-col w-72 '>
-                            <p className='  font-bold ' >Use by {coupon.Validity}</p>
+                        <div className='flex items-center gap-x-2 px-1'>
+                            <Image src={'/special.png'} alt='speac' width={50} height={50} />
+                            <div className='flex  my-4 flex-col w-80 '>
+                                <h1 className={`font-bold  `}>{coupon?.offerTitle}</h1>
+                                <p className='text-gray-700 text-sm text-nowrap' >{coupon?.validityCriteria}</p>
+                            </div>
                         </div>
-                    </div>
-                    <div className='flex items-center justify-center mb-4 gap-x-2 px-2'>
-                        <Button size={'lg'} onClick={() => router.push(`/claimcoupon`)} className={`my-2 bg-[#a2225a] hover:bg-pink-600 hover:scale-95 hover:transition p-4 flex gap-x-2 ${manrope.className} rounded-2xl text-lg  font-bold`}> Avail Offer <span className='bg-white rounded-full'> <ChevronRight color='#a2225a' /></span></Button>
+                        <div className='flex items-center gap-x-2 px-2'>
+                            <BadgeCheckIcon color='green' size={34} />
+                            <div className='flex  my-4 flex-col w-72 '>
+                                <p className='  font-bold ' >Use by {coupon?.validityCriteria}</p>
+                            </div>
+                        </div>
+                        <div className='flex items-center justify-center mb-4 gap-x-2 px-2'>
+                            <Button onClick={() => router.push(`/claimcoupon/${coupon._id}?vendor=${coupon.floaterID._id}`)} size={'lg'} className={`my-2 bg-[#a2225a] hover:bg-pink-600 hover:scale-95 hover:transition p-4 flex gap-x-2 ${manrope.className} rounded-2xl text-lg  font-bold`}> Avail Offer <span className='bg-white rounded-full'> <ChevronRight color='#a2225a' /></span></Button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
     )
 }
