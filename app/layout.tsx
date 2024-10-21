@@ -4,6 +4,7 @@ import AppBottomBar from "@/components/AppBottomBar";
 import Bannner from "@/components/Banner";
 import { Manrope } from 'next/font/google';
 import PageWrapper from "@/components/PageWrapper";
+import { Toaster } from "@/components/ui/sonner"
 
 const manrope = Manrope({
   subsets: ['latin'],
@@ -30,6 +31,7 @@ export default function RootLayout({
         </div>
         <div className="max-w-screen w-full">
           {children}
+          <Toaster richColors />
         </div>
         <div className="block sm:hidden">
           <AppBottomBar />

@@ -65,7 +65,7 @@ const CouponsList = () => {
           </div>
         </div> */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 justify-center items-center w-[95vw] pt-6 mx-auto pb-40">
-          {coupons && coupons.map((coupon: Coupontype, index) => (
+          {coupons && coupons.map((coupon: Coupontype, index:number) => (
             <Link href={`/couponview/${coupon._id}?vendor=${coupon.floaterID._id}`} className="flex justify-center " key={coupon._id}>
               <Coupon
                 brandName={coupon.floaterID.name}

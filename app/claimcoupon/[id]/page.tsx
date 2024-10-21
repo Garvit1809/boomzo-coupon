@@ -58,16 +58,11 @@ export default function Page() {
     try {
       const response = await signUp(name, phone);
       const fetchedData = response.data;
-      // console.log("login", fetchedData.existingCustomer._id);
 
       if (fetchedData) {
         const issuerId = localStorage.getItem('IssuerId');
-        const parsedIssuerId = issuerId ? JSON.parse(issuerId) : null;
-        
+        const res = await couponsAvailedReqest(fetchedData._id, id as string, issuerId as string , vendor);
 
-        console.log(fetchedData.existingCustomer._id, id, parsedIssuerId, vendor)
-
-        const res = await couponsAvailedReqest(fetchedData._id, id as string ,parsedIssuerId, vendor);
         if (res.status === 200) {
           localStorage.setItem('validatedUser', JSON.stringify(fetchedData));
           setData(fetchedData);

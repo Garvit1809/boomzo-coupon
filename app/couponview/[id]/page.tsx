@@ -20,7 +20,6 @@ export default function Page() {
     const { id } = useParams();
     const searchParams = useSearchParams();
     const vendor = searchParams.get('vendor') || 'defaultVendor';
-    console.log(vendor, id);
     const dataFetch = async () => {
         try {
             const response = await getCouponDetails(vendor, id as string);
@@ -33,7 +32,7 @@ export default function Page() {
         queryKey: ["GetDetails"],
         queryFn: dataFetch,
     });
-    console.log(data, isLoading)
+  
     const coupon = data?.coupon || {};
 
     if (error) {
@@ -55,7 +54,7 @@ export default function Page() {
                             CouponCount={"1"}
                             offerText={coupon.offerTitle}
                             Validity={coupon.validityCriteria}
-                            bgColor={"#f99fb4"}
+                            bgColor={"#FFD483"}
 
                         />
                     }
