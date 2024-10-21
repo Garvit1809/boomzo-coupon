@@ -275,7 +275,7 @@ const Coupon: React.FC<Props> = ({ className, brandName, bgColor, offerText, Val
                         <div className="btn mt-2 bg-white rounded-2xl w-fit p-1 flex gap-x-2 justify-center items-center px-2"><p className={`text-[7px] font-bold  `}>Avail Offers</p> <span className="bg-black rounded-full"><ChevronRight color="white" size={14} /></span> </div> <div className="absolute top-11 right-[7.1rem] bg-black  rounded-full  text-white text-[8px] p-[0.30rem] leading-none ">{CouponCount}</div>
                     </div>
                     <div className="absolute  top-0 right-8 rounded-full  border-black border-[1px] ">
-                        <Image src={ImgUrl ?? '/default-image.jpg'} alt="coupon" width={75} height={75} className="bg-contain rounded-full " />
+                        <Image src={ImgUrl ?? '/default-image.jpg'} alt="coupon" width={75} height={75} className="bg-auto h-20 w-18 rounded-full " />
                     </div>
                     <div className="absolute  left-[5.0rem] top-[4.7rem] ">
                         <h1 className="text-[8px] font-bold text-center text-[#320e03] ">{Validity}</h1>
