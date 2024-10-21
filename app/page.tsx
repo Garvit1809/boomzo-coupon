@@ -27,7 +27,6 @@ export default Home;
 
 const CouponsList = () => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  // const [loding, setLoding] = useState<boolean>(true);
   const handleTagClick = (tagName: string) => {
     setSelectedTags((prev) =>
       prev.includes(tagName) ? prev.filter((tag) => tag !== tagName) : [...prev, tagName]
