@@ -20,13 +20,13 @@ export interface Coupontype {
   updatedAt: string;
 }
 
-
-
-
 export interface Customer {
   name: string;
   phone: string;
-  coupons: string[]; // Array of IssuanceRequest IDs
+  coupons: string[]; // Assuming coupons are an array of strings (IDs or codes)
+  _id: string;
+  createdAt: string; // Using string since it's an ISO date string
+  updatedAt: string; // Using string since it's an ISO date string
 }
 
 export interface IssuanceRequest {
@@ -46,7 +46,7 @@ export interface Vendor {
   phone: string;
   address: string;
   category: VendorCategory;
-  coupons: Coupon[]; // Array of Coupon objects
+  coupons: Coupontype[]; // Array of Coupon objects
   isDistributingCoupon: boolean;
   issuanceLimit: number;
   password: string; // For internal use only

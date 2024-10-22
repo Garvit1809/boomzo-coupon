@@ -12,7 +12,7 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "BoomZo Coupons",
+  title: "Boomzo Coupons",
   description: "All Trending Coupons and Deals",
 };
 

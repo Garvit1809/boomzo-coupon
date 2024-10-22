@@ -1,53 +1,68 @@
 "use client";
-import Coupon from '@/components/ui/Coupon';
-import CouponSkeleton from '@/components/ui/CouponSkeleton';
-import { getCouponsbyScan } from '@/lib/api';
-import { Coupontype } from '@/types/app';
-import Link from 'next/link';
-import { useQuery } from 'react-query';
-// import { filter } from "@/data/filter-data";
-import { useParams } from 'next/navigation';
-
-const colors = ['#CDFF83', '#FFD483', '#F99FB4', '#F9C3C4', '#82c6d1', '#9cabdf'];
+import Coupon from "@/components/ui/Coupon";
+import CouponSkeleton from "@/components/ui/CouponSkeleton";
+import { getCouponsbyScan } from "@/lib/api";
+import { getRandomColor } from "@/lib/helperFunctions";
+import { Coupontype, Vendor } from "@/types/types";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function page() {
   return (
-        <main className="w-full mx-auto">
-          <CouponsList />
-        </main>
-  )
+    <main className="w-full mx-auto">
+      <CouponsList />
+    </main>
+  );
 }
 
+// filters code
+// const [selectedTags, setSelectedTags] = useState<string[]>([]);
+// const handleTagClick = (tagName: string) => {
+//   setSelectedTags((prev) =>
+//     prev.includes(tagName) ? prev.filter((tag) => tag !== tagName) : [...prev, tagName]
+//   );
+// };
+
 const CouponsList = () => {
-    const { id } = useParams();
-    // const [selectedTags, setSelectedTags] = useState<string[]>([]);
-    // const handleTagClick = (tagName: string) => {
-    //   setSelectedTags((prev) =>
-    //     prev.includes(tagName) ? prev.filter((tag) => tag !== tagName) : [...prev, tagName]
-    //   );
-    // };
-    const dataFetch = async () => {
-      try {
-        const response = await getCouponsbyScan(id as string); 
-        localStorage.setItem('IssuerId', JSON.stringify(response.data.coupons[0].floaterID._id));
-        return response.data;
-      } catch (error) {
-        throw new Error(`Error in fetching data: ${error instanceof Error ? error.message : 'Unknown error'}`);
-      }
+  const { id } = useParams();
+
+  const [coupons, setCoupons] = useState<Coupontype[]>([]);
+  const [issuer, setIssuer] = useState<Vendor>();
+  const [loading, setLoading] = useState(true);
+
+  const dataFetch = async () => {
+    try {
+      const response = await getCouponsbyScan(id as string);
+      localStorage.setItem("IssuerId", JSON.stringify(id));
+      // return response.data;
+      setCoupons(response.data.coupons);
+      setIssuer(response.data.vendor);
+      setLoading(false);
+    } catch (error) {
+      throw new Error(
+        `Error in fetching data: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`
+      );
     }
-    const { isLoading, data } = useQuery({
-      queryKey: ["GetAllCoupons"],
-      queryFn: dataFetch,
-    });
-    const coupons = data?.coupons || [];
-    const getRandomColor = () => {
-        const randomIndex = Math.floor(Math.random() * colors.length);
-        return colors[randomIndex]
-      };
-  
-    return (
-      <>
-        {/* <div className="filter tag">
+  };
+
+  useEffect(() => {
+    dataFetch();
+  }, []);
+
+  // const { isLoading, data } = useQuery({
+  //   queryKey: ["GetAllCoupons"],
+  //   queryFn: dataFetch,
+  // });
+
+  // const coupons = data?.coupons || [];
+
+  return (
+    <>
+      {/* filters */}
+      {/* <div className="filter tag">
           <div className="flex justify-start md:justify-center gap-x-2 overflow-x-scroll py-2  px-3">
             {filter.map((item, index) => {
               const isSelected = selectedTags.includes(item.name);
@@ -64,9 +79,21 @@ const CouponsList = () => {
             })}
           </div>
         </div> */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 justify-center items-center w-[95vw] pt-6 mx-auto pb-40">
-          {coupons && coupons.map((coupon: Coupontype, index:number) => (
-            <Link href={`/couponview/${coupon._id}?vendor=${coupon.floaterID._id}`} className="flex justify-center " key={coupon._id}>
+      {issuer && (
+        <div className="w-[90%] mx-auto text-center flex justify-center">
+          <h1 className="text-xl font-semibold">
+            {issuer?.name}&apos;s Coupons
+          </h1>
+        </div>
+      )}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 justify-center items-center w-[95vw] pt-6 mx-auto pb-40">
+        {coupons &&
+          coupons.map((coupon: Coupontype, index: number) => (
+            <Link
+              href={`/coupon/${coupon._id}?vendor=${coupon.floaterID._id}`}
+              className="flex justify-center "
+              key={coupon._id}
+            >
               <Coupon
                 brandName={coupon.floaterID.name}
                 ImgUrl={coupon.floaterID.img}
@@ -75,24 +102,23 @@ const CouponsList = () => {
                 Validity={coupon.validityCriteria}
                 bgColor={getRandomColor()}
                 className="hover:filter hover:brightness-110 hover:transition hover:scale-95"
-  
               />
             </Link>
           ))}
-          {isLoading &&
-            <>
-              <div className="flex justify-center items-center px-5 ">
-                <CouponSkeleton />
-              </div>
-              <div className="flex justify-center items-center px-5 ">
-                <CouponSkeleton />
-              </div>
-              <div className="flex justify-center items-center px-5 ">
-                <CouponSkeleton />
-              </div>
-            </>
-          }
-        </div>
-      </>
-    )
-  }
+        {loading && (
+          <>
+            <div className="flex justify-center items-center px-5 ">
+              <CouponSkeleton />
+            </div>
+            <div className="flex justify-center items-center px-5 ">
+              <CouponSkeleton />
+            </div>
+            <div className="flex justify-center items-center px-5 ">
+              <CouponSkeleton />
+            </div>
+          </>
+        )}
+      </div>
+    </>
+  );
+};
