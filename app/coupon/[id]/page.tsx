@@ -100,7 +100,6 @@ export default function Page() {
             <Coupon
               brandName={coupon.floaterID.name}
               ImgUrl={coupon.floaterID.img}
-              CouponCount={"1"}
               offerText={coupon.offerTitle}
               Validity={coupon.validityCriteria}
               bgColor={"#FFD483"}

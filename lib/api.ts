@@ -21,7 +21,7 @@ export const getCustomerCoupons = async (phone: string) => {
   const response = await apiInstance.post(`/api/v1/customer/my-coupons`, {
     phone,
   });
-  return response.data;
+  return response;
 };
 
 export const getCouponsbyScan = async (vendorId: string) => {
@@ -52,6 +52,21 @@ export const couponsAvailedReqest = async (
       issuerID,
       floaterID,
     }
+  );
+  return response;
+};
+
+export const redeemCouponRequest = async (issuanceRequestID: string) => {
+  const response = await apiInstance.post(
+    `/api/v1/customer/redeem/${issuanceRequestID}`,
+    {}
+  );
+  return response;
+};
+
+export const getIssuanceRequest = async (issuanceRequestID: string) => {
+  const response = await apiInstance.get(
+    `/api/v1/customer/issuance-request/${issuanceRequestID}`
   );
   return response;
 };

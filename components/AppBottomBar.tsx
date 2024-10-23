@@ -16,7 +16,7 @@ export default function AppBottomBar() {
 
       setVendorID(JSON.parse(storedVendorID));
     }
-  }, []);
+  }, [localStorage.getItem("IssuerId")]);
 
   // Hide bottom bar on the login page
   if (currentPath === "/login") return null;
@@ -27,49 +27,53 @@ export default function AppBottomBar() {
         {/* Tab 1: Home */}
         <div
           onClick={() => router.push(`/vendor/${vendorID}`)}
-          className={`flex flex-col items-center p-1 px-4 rounded-2xl`}
+          className={`relative flex flex-col pb-2 items-center p-1 px-3 gap-y-1 rounded-2xl`}
         >
           <div
-            className={`w-14 h-8 rounded-full flex items-center justify-center  ${
+            className={`w-14 h-8 rounded-full flex items-center justify-center ${
               currentPath === `/vendor/${vendorID}`
                 ? "bg-pink-600/20"
                 : "bg-transparent"
             }`}
           >
             <Home
-              className="w-6 h-6 text-pink-600"
               strokeWidth={`${currentPath === `/vendor/${vendorID}` ? 3 : 2}`}
+              className={`w-6 h-6 text-pink-600`}
             />
           </div>
           <span
-            className={`text-sm  text-pink-600 ${
+            className={`text-xs text-pink-600 leading-none text-center ${
               currentPath === `/vendor/${vendorID}`
-                ? "bg-pink-600/20"
-                : "bg-transparent"
+                ? "font-extrabold"
+                : "font-semibold"
             }`}
           >
             Home
           </span>
         </div>
+
+        {/* divider */}
         <div className="h-10 border-l-2 border-pink-600 mx-2"></div>
+
         {/* Tab 2: My Coupons */}
+
         <div
-          onClick={() => router.push("/mycoupon")}
-          className={`flex flex-col items-center p-1 px-4 rounded-2xl`}
+          onClick={() => router.push(`/mycoupon`)}
+          className={`relative flex flex-col pb-2 items-center p-1 px-3 gap-y-1 rounded-2xl`}
         >
           <div
-            className={`${
-              currentPath === "/mycoupon" ? "bg-pink-600/20" : "bg-transparent"
+            className={`w-14 h-8 rounded-full flex items-center justify-center ${
+              currentPath === `/mycoupon` ? "bg-pink-600/20" : "bg-transparent"
             }`}
           >
             <Ticket
-              className="w-6 h-6 text-pink-600"
-              strokeWidth={`${currentPath === "/mycoupon" ? 3 : 2}`}
+              strokeWidth={`${currentPath === `/mycoupon` ? 3 : 2}`}
+              className={`w-6 h-6 text-pink-600`}
             />
           </div>
           <span
-            className={`text-sm  text-pink-600 ${
-              currentPath === "/mycoupon" ? "font-extrabold" : "font-semibold"
+            className={`text-xs text-pink-600 leading-none text-center ${
+              currentPath === `/mycoupon` ? "font-extrabold" : "font-semibold"
             }`}
           >
             My Coupons

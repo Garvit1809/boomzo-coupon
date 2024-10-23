@@ -35,7 +35,6 @@ const CouponsList = () => {
     try {
       const response = await getCouponsbyScan(id as string);
       localStorage.setItem("IssuerId", JSON.stringify(id));
-      // return response.data;
       setCoupons(response.data.coupons);
       setIssuer(response.data.vendor);
       setLoading(false);
@@ -92,12 +91,11 @@ const CouponsList = () => {
             <Link
               href={`/coupon/${coupon._id}?vendor=${coupon.floaterID._id}`}
               className="flex justify-center "
-              key={coupon._id}
+              key={index}
             >
               <Coupon
                 brandName={coupon.floaterID.name}
                 ImgUrl={coupon.floaterID.img}
-                CouponCount={`#${index}`}
                 offerText={coupon.offerTitle}
                 Validity={coupon.validityCriteria}
                 bgColor={getRandomColor()}

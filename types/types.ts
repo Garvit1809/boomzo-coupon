@@ -36,8 +36,12 @@ export interface IssuanceRequest {
   floaterID: string; // Reference to Floater Vendor ID
   isAccepted: boolean;
   issuedOn: Date;
+  hasAskedRedemption: boolean;
   isRedeemed: boolean;
   redeemedOn: Date;
+  createdAt: string;
+  updatedAt: string;
+  _id: string;
 }
 
 export interface Vendor {

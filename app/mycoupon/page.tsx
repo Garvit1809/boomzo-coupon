@@ -6,14 +6,54 @@ import CouponSkeleton from "@/components/ui/CouponSkeleton";
 import { getCustomerCoupons } from "@/lib/api";
 import { getRandomColor } from "@/lib/helperFunctions";
 import { CUSTOMER_DATA } from "@/lib/storage";
-import { Coupontype, Customer } from "@/types/types";
-import Link from "next/link";
+import { Customer } from "@/types/types";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+
+// Define interface for Floater details
+interface Floater {
+  _id: string;
+  name: string;
+  img: string;
+  phone: string;
+  address: string;
+}
+
+// Define interface for Coupon details
+interface Coupon {
+  _id: string;
+  floaterID: Floater;
+  category: string;
+  offerTitle: string;
+  validityCriteria: string;
+  issuedTo: string[];
+  isCouponActive: boolean;
+  impressions: number;
+  clicks: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Define interface for the main Coupon Record
+export interface CouponRecord {
+  _id: string;
+  couponID: Coupon;
+  customerID: string;
+  issuerID: string;
+  floaterID: string;
+  isAccepted: boolean;
+  hasAskedRedemption: boolean;
+  isRedeemed: boolean;
+  createdAt: string;
+  updatedAt: string;
+  issuedOn: string;
+}
 
 const MyCoupons = () => {
   const [customer, setCustomer] = useState<Customer>();
   const [customerLoading, setCustomerLoading] = useState(true);
 
+  // fetching from local storage
   function getCustomFromStorage() {
     const customerData = localStorage.getItem(CUSTOMER_DATA);
     console.log(customerData);
@@ -29,14 +69,18 @@ const MyCoupons = () => {
     getCustomFromStorage();
   }, []);
 
-  const [coupons, setCoupons] = useState<Coupontype[]>([]);
+  // fetching from
+  const [coupons, setCoupons] = useState<CouponRecord[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const dataFetch = async () => {
     if (customer) {
       try {
         const response = await getCustomerCoupons(customer?.phone);
-        setCoupons(response.data.coupon);
+        console.log("jvh,ctyxtgrxj");
+
+        console.log(response.data);
+        setCoupons(response.data.customer.coupons);
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
@@ -54,6 +98,12 @@ const MyCoupons = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [customer]);
 
+  const navigation = useRouter();
+
+  function navigationhandler(coupon: CouponRecord) {
+    navigation.push(`/redeem-coupon/${coupon._id}`);
+  }
+
   return !customerLoading ? (
     !customer ? (
       <div className="flex flex-col items-center pt-4 mx-auto gap-y-2 w-[90%]">
@@ -67,22 +117,17 @@ const MyCoupons = () => {
             <h1 className="pt-6 text-2xl font-boldx">No coupons issued yet</h1>
           </div>
         ) : (
-          coupons.map((coupon: Coupontype, index: number) => (
-            <Link
-              href={`/coupon/${coupon._id}?vendor=${coupon.floaterID._id}`}
-              className="flex justify-center "
-              key={coupon._id}
-            >
+          coupons.map((coupon: CouponRecord, index: number) => (
+            <div key={index} onClick={() => navigationhandler(coupon)}>
               <Coupon
-                brandName={coupon.floaterID.name}
-                ImgUrl={coupon.floaterID.img}
-                CouponCount={`#${index}`}
-                offerText={coupon.offerTitle}
-                Validity={coupon.validityCriteria}
+                brandName={coupon.couponID.floaterID.name}
+                ImgUrl={coupon.couponID.floaterID.img}
+                offerText={coupon.couponID.offerTitle}
+                Validity={coupon.couponID.validityCriteria}
                 bgColor={getRandomColor()}
                 className="hover:filter hover:brightness-110 hover:transition hover:scale-95"
               />
-            </Link>
+            </div>
           ))
         )}
         {isLoading && (
